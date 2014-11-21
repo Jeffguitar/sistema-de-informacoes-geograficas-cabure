@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" 
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+     <!-- Configurações de Banco Postgre-->
+        <property name="current_session_context_class">thread</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">.1t3p.</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/postgres</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="format_sql">true</property>
+         <property name="show_sql">false</property>
+    
+        <!-- Configuracao do c3po -->
+        <property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+        <property name="c3p0.acquire_increment">1</property>  
+        <property name="c3p0.min_size">3</property>  
+        <property name="c3p0.max_size">100</property>  
+        <property name="c3p0.timeout">120</property>  
+        <property name="c3p0.idle_test_period">100</property>  
+        <property name="c3p0.max_statements">0</property> 
+
+        <!-- Entidades Psicoterapia -->
+        <mapping class="com.itep.cabure.entidades.Pessoa"/>
+        <mapping class="com.itep.cabure.entidades.Endereco"/>
+        <mapping class="com.itep.cabure.entidades.Contato"/>
+        <mapping class="com.itep.cabure.entidades.Empresa"/>
+        
+        <!-- <mapping class="com.itep.cabure.entidades.Usuario"/>
+        <mapping class="com.itep.cabure.entidades.Arquivos"/> -->
+        <!--<mapping class="com.itep.cabure.entidades.LogSistema"/>-->
+    </session-factory>
+</hibernate-configuration>

@@ -1,0 +1,517 @@
+<!doctype html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="Sistema de geolocalização realizado em parceria com CPRH, Governo de Pernambuco e ITEP que oferece um serviço diferenciado e gratuito para a população">
+        <meta name="keywords" content="SIG, Sistema de Informações Geoambientais, Caburé, Pernambuco, Geoambiental, Geolocalização, CPRH, Governo de Pernambuco, ITEP, Instituto de Tecnologia de Pernambuco">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript" src="js/slider.js"></script>
+
+        <!--Scroll to Header-->
+        <script type="text/javascript">
+            function goToByScroll(id) {
+                $('html,body').animate({scrollTop: $("#" + id).offset().top}, 'fast');
+            }
+
+            function AplicarMascaraCpfCnpj(objTextBox)
+            {
+                var pComponente = objTextBox;
+                var campoMask, noTexto, noTextoMascara = '', nonNumbers = /\D/;
+
+                noTexto = pComponente.value.toString();
+
+                while (noTexto != noTexto.replace('.', '')) {
+                    noTexto = noTexto.replace('.', '');
+                }
+                while (noTexto != noTexto.replace('-', '')) {
+                    noTexto = noTexto.replace('-', '');
+                }
+                while (noTexto != noTexto.replace('/', '')) {
+                    noTexto = noTexto.replace('/', '');
+                }
+
+                if (nonNumbers.test(noTexto)) {
+                    return;
+                }
+
+                if (noTexto.length <= 11)
+                {
+                    while (noTexto.length != 11)
+                    {
+                        noTexto = '0' + noTexto;
+                    }
+                    for (var intContador = 0; intContador < noTexto.length; intContador++)
+                    {
+                        noTextoMascara += noTexto.charAt(intContador);
+                        if (intContador == 2 || intContador == 5)
+                        {
+                            noTextoMascara += '.';
+                        }
+                        else if (intContador == 8)
+                        {
+                            noTextoMascara += '-';
+                        }
+                    }
+                }
+                else
+                {
+                    if (noTexto.length > 14)
+                    {
+                        noTexto = noTexto.substr(0, 14);
+                    }
+                    while (noTexto.length != 14)
+                    {
+                        noTexto = '0' + noTexto;
+                    }
+                    for (var intContador = 0; intContador < noTexto.length; intContador++)
+                    {
+                        noTextoMascara += noTexto.charAt(intContador);
+                        if (intContador == 1 || intContador == 4)
+                        {
+                            noTextoMascara += '.';
+                        }
+                        else if (intContador == 7)
+                        {
+                            noTextoMascara += '/';
+                        }
+                        else if (intContador == 11)
+                        {
+                            noTextoMascara += '-';
+                        }
+                    }
+                }
+
+                pComponente.value = noTextoMascara;
+            }
+        </script>
+
+        <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+        <link href="css/style.css" type="text/css" media="all" rel="stylesheet"/>
+        <!-- Lightbox Plugin -->
+        <link  href="css/prettyPhoto.css" rel="stylesheet" type="text/css" media="screen" />
+        <script src="js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
+        <style>
+            #pop{
+                background: white;
+                display: none;
+                position: relative;
+                top: 219px;
+                left: 49%;
+                margin-left: -249px;
+                padding: 10px;
+                width: 454px;
+                height: 147px;
+                border: 1px solid #d0d0d0;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
+                -webkit-box-shadow: 0px 0px 25px 3px rgba(97, 97, 97, 0.37);
+                -moz-box-shadow: 0px 0px 25px 3px rgba(97, 97, 97, 0.37);
+                box-shadow: 0px 0px 25px 3px rgba(97, 97, 97, 0.37);
+            }
+
+            .bubble {
+                position: relative;
+                width: 250px;
+                height: 100px;
+                padding: 0px;
+                background: #FFFFFF;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
+                -webkit-box-shadow: 0px 0px 25px 3px rgba(97, 97, 97, 0.37);
+                -moz-box-shadow: 0px 0px 25px 3px rgba(97, 97, 97, 0.37);
+                box-shadow: 0px 0px 25px 3px rgba(97, 97, 97, 0.37);
+            }
+
+            .bubble:after {
+                content: "";
+                position: absolute;
+                top: -15px;
+                left: 155px;
+                border-style: solid;
+                border-width: 0 15px 15px;
+                border-color: #FFFFFF transparent;
+                display: block;
+                width: 0;
+                z-index: 1;
+            }
+
+
+        </style>
+
+        <title>SIG Caburé - Sistema de Informações Geoambientais de Pernambuco</title>
+        <script>
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r;
+                i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+                a = s.createElement(o),
+                        m = s.getElementsByTagName(o)[0];
+                a.async = 1;
+                a.src = g;
+                m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+            ga('create', 'UA-49390512-1', 'pe.gov.br');
+            ga('send', 'pageview');
+        </script>
+
+
+    </head>
+    <body> 
+        <!---------- Barra do GovernoPE ------------------>
+        <iframe src="http://www2.ati.pe.gov.br/SiteAti-theme/topo-governo/topo-governo.html" scrolling="no" frameborder="0" width="100%" height="58px"></iframe>
+        <!------ /barra do GovernoPE ------------------->
+
+        <!---------- Wrappper ------------------>
+        <div class="wrapper">
+            <!---------- Topo ------------------>
+            <header id="header">
+                <div class="block-container">
+                    <div class="logo">
+                        <a href="index.jsp" title="SIG Caburé"><img src="images/logo-cabure.fw.png" alt="SIG Caburé"/></a>
+                    </div>
+                    <div class="access-button" style="height: 100px;">
+                        <div id="pop" class="bubble">
+                            <a href="#" onclick="document.getElementById('pop').style.display = 'none';" style="float: right;">&times;</a>
+
+                            <div style="width:220px; float: left; padding-right: 10px; border-right: solid; border-width: 1px; border-right-color: #d0d0d0">
+                                <form class="Colaborador" name="formColaborador" id="formColaborador" method="post" onsubmit="return validacpf();" action="Login.do">
+                                    <input OnChange="AplicarMascaraCpfCnpj(this);" name="o-cpf-cnpj" id="1o-cpf" type="text" style="width:195px;" placeholder=" CPF do usuário cadastrado" required />
+                                    <br>
+                                    <input name="senha" id="senha" type="password" style="width:195px;" placeholder=" Senha do usuário cadastrado" required/>
+                                    <br><br>
+                                    <a href="recover.jsp" style="font-size: 12px; display: inline;margin-left: 8px; padding-right: 10px;">Esqueci minha senha </a>
+                                    <input id="submit" type="submit" value="Enviar">
+                                </form>
+                                <br/>
+                            </div>
+
+                            <div style="padding-left: 10px; width:190px; float: left;  margin: 0px 15px 15px 0px;">
+                                <p>Não possui cadastro? <a href="reg.jsp" style="font-size: 17px; text-decoration: underline;">Cadastre-se</a>. É gratuito!</p>
+                                <br>
+                                <p>Ou você também pode acessar a versão aberta sem precisar fazer cadastro.</p>
+                                <br><br><br>
+                                <a type="butao1" href="index.jsp" style="font-size: 1.6em;"> Acessar versão aberta</a>
+                            </div>
+                        </div>
+                        <a href="#" onclick="document.getElementById('pop').style.display = 'block';" id="ent" type="butao"> Entrar </a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="reg.jsp" id="cad" type="butao"> Cadastre-se </a>
+                    </div>
+            </header>
+            <!---------- /Topo ------------------>
+            <section class="homepage-intro">
+                <div class="block-container">
+                    <div id="slider" class="slider">
+                        <img src="images/homepage-introduction-1.jpg" alt="SIG Caburé" id="noImage" >
+                        <span>
+                            <h1>Sistema de Informações Geográficas</h1>
+                            <p>Ferramentas computacionais que coletam, armazenam, recuperam, transformam e visualizam dados sobre o mundo real em ambiente georreferenciado de suporte a interpretação, análise e decisão.</p>
+                        </span>
+
+                        <img src="images/homepage-introduction-2.jpg" alt="Denominação Caburé" />
+                        <span>
+                            <h1>Caburé, a coruja pernambucana</h1>
+                            <p>A Caburé-de-Pernambuco é uma corujinha endêmica de Pernambuco, que sintetiza a referência do símbolo global do conhecimento e visão ampla, filosofia do SIG-CABURÉ.
+
+                            </p>
+                            <a href="cabure_pernambuco.html"> Saiba Mais </a>
+                        </span>
+
+                        <img src="images/homepage-introduction-3.jpg" alt="Sistemas de Informação Geográfica" />
+                        <span>
+                            <h1>A coruja e sua simbologia</h1>
+                            <p>Ao longo da história da humanidade a coruja tem simbolizado conhecimento e sabedoria.</p><a href="coruja_simbologia.html"> Saiba Mais </a>
+                        </span>
+
+                        <img src="images/homepage-introduction-4.jpg" alt="Justificativa Caburé" />
+                        <span>
+                            <h1>A mascote do SIG Caburé</h1>
+                            <p>Ao adotarmos a corujinha Caburé-de-Pernambuco como mascote do SIG não restavam dúvidas que a logomarca do sistema teria que representa-la. O processo de criação passou por várias etapas.</p><a href="mascote_sig_cabure.html"> Saiba Mais </a>
+                        </span>
+                    </div>
+                    <script>
+                        $('#slider').coinslider();
+                    </script>
+                </div>
+            </section>
+
+            <section class="homepage-functions">
+                <div class="block-container">
+                    <h2>No SIG Caburé você pode...</h2>
+                    <div class="function">
+                        <div class="title">
+                            <img src="images/ico-function-monte-seu-mapa.fw.png" alt="Montar seu Mapa"/>
+                            <h3>Montar seu Mapa</h3>
+                        </div>
+                        <p>Construa e obtenha mapas personalizados com os temas desejados.</p>
+                        <!--<p><a href="https://www.youtube.com/watch?v=g-btf_jqavQ"  target="_blank" rel='videoFunction' title='Montar seu mapa'>Saiba Mais</a></p>-->
+                    </div>
+                    <div class="function center">
+                        <div class="title">
+                            <img src="images/ico-function-navegacao.fw.png" alt="Navegar por Geoinformações"/>
+                            <h3>Navegar pelo sistema</h3>
+                        </div>
+                        <p>O SIG Caburé disponibiliza e permite exportação de informações ambientais georreferenciadas do estado de Pernambuco.</p>
+                        <!--<p><a href="https://www.youtube.com/watch?v=g-btf_jqavQ"  target="_blank" rel='videoFunction' title='Navegar pelo sistema'>Saiba Mais</a></p>-->
+                    </div>
+                    <div class="function">
+                        <div class="title">
+                            <img src="images/ico-function-exportar.fw.png" alt="Exportar Arquivos Geoambientais"/>
+                            <h3>Exportar arquivos</h3>
+                        </div>
+                        <p>Você poderá exportar, salvar e imprimir os arquivos com informações obtidas.</p>
+                        <!--<p><a href="https://www.youtube.com/watch?v=g-btf_jqavQ"  target="_blank" rel='videoFunction' title='Exportar arquivos'>Saiba Mais</a></p>-->
+                    </div>
+                    <div class="clear">
+                    </div>
+                    <div class="function">
+                        <div class="title">
+                            <img src="images/ico-function-conhecimento-previo.fw.png" alt="Obter Conhecimento Prévio"/>
+                            <h3>Obter Conhecimento</h3>
+                        </div>
+                        <p>Conheça as Unidades de Conservação e os Estudos Ambientais existentes.</p>
+                        <!-- <p><a href="https://www.youtube.com/watch?v=g-btf_jqavQ"  target="_blank" rel='videoFunction' title='Obter Conhecimento'>Saiba Mais</a></p>-->
+                    </div>
+                    <div class="function center">
+                        <div class="title">
+                            <img src="images/ico-function-ferramentas-desenho.fw.png" alt="Desenhar no Mapa"/>
+                            <h3>Desenhar no Mapa</h3>
+                        </div>
+                        <p>Faça desenhos no mapa e descubra informações sobre as áreas desenhadas.</p>
+                        <!--<p><a href="https://www.youtube.com/watch?v=g-btf_jqavQ"  target="_blank" rel='videoFunction' title='Desenhar no Mapa'>Saiba Mais</a></p>-->
+                    </div>
+                    <div class="function">
+                        <div class="title">
+                            <img src="images/ico-function-manifestacao.fw.png" alt="Registrar sua Manifestação"/>
+                            <h3>Registrar sua Manifestação</h3>
+                        </div>
+                        <p>No SIG Caburé você pode registrar um elogio, uma reclamação, uma denúncia ou dar uma sugestão.</p>
+                        <!--<p><a href="https://www.youtube.com/watch?v=g-btf_jqavQ"  target="_blank" rel='videoFunction' title='Registrar sua Manifestação'>Saiba Mais</a></p>-->
+                    </div>
+                </div>
+            </section>
+
+            <section class="homepage-tips">
+                <div class="block-container">
+                    <div class="tips">
+                        <h3>Unidades de Conservação</h3>
+                        <img src="images/ico-tips-unidades-conservacao.fw.png" alt="Unidades de Conservação" />
+                        <p>São espaços territoriais delimitados e protegidos por lei que tem como objetivo principal a conservação da biodiversidade dos ecossistemas. <br> Elas se dividem em dois grupos: de Uso Sustentável, cujo uso direto é permitido desde que não degrade os ecossistemas; e de Proteção Integral, de uso mais restrito.</p>
+                        <a href="http://www.cprh.pe.gov.br/unidades_conservacao/ESTADUAIS/40035%3B32133%3B2238%3B0%3B0.asp" target="_blank">Saiba Mais</a>
+                    </div>
+                    <div class="tips vline">
+                        <h3>Estudos Ambientais</h3>
+                        <img src="images/ico-tips-estudos-ambientais.fw.png" alt="Estudos Ambientais" />
+                        <p>O licenciamento ambiental de empreendimentos efetiva ou potencialmente causadores de degradação do meio será precedido de avaliação de impacto ambiental, subsidiada por estudos ambientais específicos. <br> A CPRH adota três tipos de estudos dependendo da tipologia, porte e localização do empreendimento: EIA/RIMA, RAS e RAP. Veja os estudos disponíveis no sistema. </p>
+                        <a href="http://www.cprh.pe.gov.br/licenciamento/avaliacao_impacto_ambiental/39710%3B61830%3B1505%3B0%3B0.asp" target="_blank">Saiba Mais</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!---------- /Wrappper ------------------>
+        <!---------- Rodapé ------------------>
+        <footer>
+            <div class="strip"></div>
+            <div class="block-container">
+                <div class="socials">
+                    <span>
+                        <a href="contato.php">
+                            <img src="images/ico-footer-email.fw.png" alt="Enviar Mensagem" title="Enviar Mensagem" />
+                        </a>
+                    </span>
+                    <span>
+                        <a href="http://twitter.com/CPRH_PE" target="_blank">
+                            <img src="images/ico-footer-twitter.fw.png" alt="Siga-nos no Twitter" title="Siga-nos no Twitter" />
+                        </a>
+                    </span>
+                    <span>
+                        <a href="http://www.facebook.com/CPRHPE" target="_blank">
+                            <img src="images/ico-footer-facebook.fw.png" alt="Curta no Facebook" title="Curta no Facebook" />
+                        </a>
+                    </span>
+                    <span class="vline">
+                        <img src="images/ico-footer-ouvidoria.fw.png" alt="Entre em contato com a Ouvidoria" title="Ouvidoria" /> (81) 3182-8923</span>
+
+
+                </div>
+                <div class="hline"></div>
+                <div class="realizacao">
+                    <p>Realização</p>
+                    <span>
+                        <a href="http://www.cprh.pe.gov.br/" target="_blank">
+                            <img src="images/logo-cprh.fw.png" alt="Agência Estadual do Meio Ambiente" title="Agência Estadual do Meio Ambiente" />
+                        </a>
+                    </span>
+                    <span>
+                        <a href="http://www.pe.gov.br/" target="_blank">
+                            <img src="images/logo-governo-pe-secretaria-ma.fw.png" alt="Governo de Pernambuco" title="Governo de Pernambuco" />
+                        </a>
+                    </span>
+                </div>
+                <div class="hline"></div>
+                <div class="development">
+                    <p>Desenvolvimento</p>
+                    <br><br>
+                    <span>
+                        <a href="http://www.itep.br" target="_blank">
+                            <img src="images/logo-itep.fw.png" alt="ITEP" />
+                        </a>
+
+                    </span> <br><br><br>
+                    <p><a href="javascript:void(0)" onClick="goToByScroll('header')"><img src="images/btn-go-to-header.fw.png" alt="Voltar para Topo" title="Voltar para Topo" /></a><p>
+                </div>
+
+                <!-- <a class="goToHeader" href="javascript:;"><img src="images/btn-go-to-header.fw.png" alt="Voltar para Topo" title="Voltar para Topo" /></a>-->
+            </div>
+        </footer>
+        <!---------- /Rodapé ------------------>
+
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function () {
+                $("a[rel^='videoFunction']").videoFunction({
+                    social_tools: false
+                });
+            });
+        </script>
+        <script src="layer/jquery-1.5.2.min.js"></script>
+        <script src="layer/jquery.maskedinput-1.3.min.js"></script>
+        <script>
+            $().ready(function () {
+                $("#opcao").change(function () { //Quando houver uma mudança no select
+                    var opt = $("#opcao option:selected").val(); //Recupera o valor do option selecionado
+                    var mask = "";
+                    if (opt == 1) {
+                        mask = "99.999.999/9999-99";
+                    } else if (opt == 2) {
+                        mask = "999.999.999-99";
+                    } else if (opt == 3) {
+                        mask = "(99) 9999-9999";
+                    }
+                    $("input[name=consultar]").mask(mask);
+                });
+            });
+
+            jQuery(function ($) {
+                $("#o-cpf").mask("999.999.999-99");
+            });
+        </script>
+        <script>
+            function validacpf() {
+                CPF = $("#o-cpf-cnpj").val();
+                if (!CPF) {
+                    return false;
+                }
+                erro = new String;
+                cpfv = CPF;
+
+                //FALTA VALIDAR CNPJ
+                $("#o-cpf-cnpj").css("background-color", "white");
+                $("#o-cpf-cnpj").css("opacity", "1.0");
+                $("#icon1").innerHTML = erro;
+
+
+                if (cpfv.length == 14 || cpfv.length == 11) {
+                    cpfv = cpfv.replace('.', '');
+                    cpfv = cpfv.replace('.', '');
+                    cpfv = cpfv.replace('-', '');
+
+                    var nonNumbers = /\D/;
+
+                    if (nonNumbers.test(cpfv)) {
+                        erro = "A verificacao de CPF suporta apenas números!";
+                    } else {
+                        if (cpfv == "00000000000" ||
+                                cpfv == "11111111111" ||
+                                cpfv == "22222222222" ||
+                                cpfv == "33333333333" ||
+                                cpfv == "44444444444" ||
+                                cpfv == "55555555555" ||
+                                cpfv == "66666666666" ||
+                                cpfv == "77777777777" ||
+                                cpfv == "88888888888" ||
+                                cpfv == "99999999999") {
+
+                            erro = "Número de CPF inválido.";
+
+                            $("#o-cpf-cnpj").css("background-color", "#EEB4B4");
+                            $("#o-cpf-cnpj").css("opacity", "0.8");
+                            $("#icon1").css("display", "inline");
+                            $("#icon1").innerHTML = erro;
+                            return false;
+                        }
+                        var a = [];
+                        var b = new Number;
+                        var c = 11;
+
+                        for (i = 0; i < 11; i++) {
+                            a[i] = cpfv.charAt(i);
+                            if (i < 9)
+                                b += (a[i] * --c);
+                        }
+                        if ((x = b % 11) < 2) {
+                            a[9] = 0;
+                        } else {
+                            a[9] = 11 - x;
+                        }
+                        b = 0;
+                        c = 11;
+                        for (y = 0; y < 10; y++)
+                            b += (a[y] * c--);
+
+                        if ((x = b % 11) < 2) {
+                            a[10] = 0;
+                        } else {
+                            a[10] = 11 - x;
+                        }
+                        if ((cpfv.charAt(9) != a[9]) || (cpfv.charAt(10) != a[10])) {
+                            erro = "Número de CPF inválido.";
+                            $("#o-cpf-cnpj").css("background-color", "#EEB4B4");
+                            $("#o-cpf-cnpj").css("opacity", "0.8");
+                            $("#icon1").css("display", "inline");
+                            $("#icon1").innerHTML = erro;
+                            return false;
+                        }
+                    }
+                } else {
+                    if (cpfv.length == 0) { //SE NADA FOR PREENCHIDO
+                        $("#o-cpf-cnpj").css("background-color", "white");
+                        $("#o-cpf-cnpj").css("opacity", "1.0");
+                        $("#icon1").css("display", "none");
+                        $("#icon1").innerHTML = erro;
+                        return false;
+                    } else {
+                        erro = "Número de CPF inválido.";
+                        $("#o-cpf-cnpj").css("background-color", "#EEB4B4");
+                        $("#o-cpf-cnpj").css("opacity", "0.8");
+                        $("#icon1").css("display", "inline");
+                        $("#icon1").innerHTML = erro;
+                        return false;
+
+                    }
+                }
+                if (erro.length > 0) {
+                    $(this).val('');
+                    //alert(erro);
+                    //setTimeout(function(){$(this).focus();},100);
+                    $("#recover_cpf").css("background-color", "#EEB4B4");
+                    $("#recover_cpf").css("opacity", "0.8");
+                    $("#icon1").css("display", "inline");
+                    $("#icon1").innerHTML = "<p for='total'>" + erro + "</p>";
+                }
+            }
+        </script>
+        <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>-->
+        <script>
+            $('.goToHeader').click(function () {
+                $('html, body').animate({scrollTop: 0}, 'slow');
+            });
+        </script>
+    </body>
+</html>
