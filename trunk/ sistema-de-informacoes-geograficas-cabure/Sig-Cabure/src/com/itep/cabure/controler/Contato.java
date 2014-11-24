@@ -28,6 +28,23 @@ public class Contato extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String nome = request.getParameter("nome");
+		String email = request.getParameter("email");
+		String uf = request.getParameter("uf");
+		String cidade = request.getParameter("cidade");
+		String prof = request.getParameter("prof");
+		
+		
+		System.out.println("Estamos aqui!!!");
+		System.out.println(nome);
+		System.out.println(email);
+		System.out.println(uf);
+		System.out.println(cidade);
+		System.out.println(prof);
+		
+		
+		
+		response.sendRedirect("respostaContato.jsp");
 	}
 
 	/**
